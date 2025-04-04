@@ -1,4 +1,4 @@
-// Cấu hình Firebase từ project của bạn
+// Cấu hình Firebase của bạn
 const firebaseConfig = {
   apiKey: "AIzaSyCzzLZdTeI8xIWRM1Wa76GwmVIMQGu8Woc",
   authDomain: "chatbox-2da1f.firebaseapp.com",
@@ -13,7 +13,7 @@ const firebaseConfig = {
 // Khởi tạo Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Tham chiếu database realtime
+// Tham chiếu Realtime Database
 const db = firebase.database();
 const chatRef = db.ref("chat");
 
@@ -21,6 +21,16 @@ const chatRef = db.ref("chat");
 const nameInput = document.getElementById("name");
 const messageInput = document.getElementById("messageInput");
 const messagesDiv = document.getElementById("messages");
+
+// Hàm tạo màu riêng theo tên
+function getColorByName(name) {
+  const colors = ["#007BFF", "#6f42c1", "#d63384", "#198754", "#fd7e14", "#20c997"];
+  let total = 0;
+  for (let i = 0; i < name.length; i++) {
+    total += name.charCodeAt(i);
+  }
+  return colors[total % colors.length];
+}
 
 // Gửi tin nhắn
 function sendMessage() {
@@ -43,9 +53,3 @@ function sendMessage() {
 // Nhận tin nhắn realtime
 chatRef.on("child_added", (snapshot) => {
   const data = snapshot.val();
-  const msg = document.createElement("div");
-  msg.className = "msg";
-  msg.textContent = `${data.name}: ${data.message}`;
-  messagesDiv.appendChild(msg);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-});
