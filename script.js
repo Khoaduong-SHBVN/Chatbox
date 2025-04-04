@@ -1,4 +1,4 @@
-// Cấu hình Firebase chuẩn
+// Cấu hình Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCzzZLd7eI8xIWRM1Wa76GwmVIMQGu8Woc",
   authDomain: "chatbox-2da1f.firebaseapp.com",
@@ -10,7 +10,7 @@ const firebaseConfig = {
   measurementId: "G-BWTY22HN8N"
 };
 
-// Khởi tạo Firebase đúng cách cho bản compat
+// Khởi tạo Firebase (compat)
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const auth = firebase.auth();
@@ -24,7 +24,7 @@ const authSection = document.getElementById("auth-section");
 const chatSection = document.getElementById("chat-section");
 const userEmailDisplay = document.getElementById("userEmail");
 
-// Gán màu riêng
+// Màu riêng theo tên
 function getColorByName(name) {
   const colors = ["#007BFF", "#6f42c1", "#d63384", "#198754", "#fd7e14", "#20c997"];
   let total = 0;
@@ -34,7 +34,7 @@ function getColorByName(name) {
   return colors[total % colors.length];
 }
 
-// Format thời gian
+// Định dạng giờ
 function formatTime(isoString) {
   const date = new Date(isoString);
   const hours = String(date.getHours()).padStart(2, '0');
@@ -58,8 +58,10 @@ chatRef.on("child_added", (snapshot) => {
   const data = snapshot.val();
   const msg = document.createElement("div");
   msg.className = "msg";
+
   const color = getColorByName(data.name);
   const time = data.timestamp ? formatTime(data.timestamp) : "";
+
   msg.innerHTML = `<strong style="color: ${color}">${data.name}:</strong> ${data.message} <span style="color:#aaa; font-size:0.85em">(${time})</span>`;
   messagesDiv.appendChild(msg);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -69,10 +71,10 @@ chatRef.on("child_added", (snapshot) => {
 function register() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-  if (!email || !password) return alert("Nhập email và mật khẩu");
+  if (!email || !password) return alert("Vui lòng nhập email và mật khẩu");
 
   auth.createUserWithEmailAndPassword(email, password)
-    .then(() => alert("Đăng ký thành công!"))
+    .then(() => alert("Tạo tài khoản thành công!"))
     .catch(err => alert(err.message));
 }
 
@@ -80,7 +82,7 @@ function register() {
 function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-  if (!email || !password) return alert("Nhập email và mật khẩu");
+  if (!email || !password) return alert("Vui lòng nhập email và mật khẩu");
 
   auth.signInWithEmailAndPassword(email, password)
     .catch(err => alert(err.message));
@@ -91,7 +93,7 @@ function logout() {
   auth.signOut();
 }
 
-// Kiểm tra trạng thái đăng nhập
+// Theo dõi trạng thái người dùng
 auth.onAuthStateChanged(user => {
   if (user) {
     authSection.classList.add("hidden");
