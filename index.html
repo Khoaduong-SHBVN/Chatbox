@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat 2 Người Realtime</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+      display: flex;
+      justify-content: center;
+      padding-top: 50px;
+    }
+
+    .chat-container {
+      width: 400px;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    #messages {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .msg {
+      margin: 5px 0;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <input type="text" id="name" placeholder="Tên của bạn">
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Nhập tin nhắn...">
+    <button onclick="sendMessage()">Gửi</button>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+
+  <!-- Script xử lý chat -->
+  <script src="script.js"></script>
+</body>
+</html>
