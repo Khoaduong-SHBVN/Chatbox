@@ -1,6 +1,6 @@
-// Cấu hình Firebase
+// Cấu hình Firebase mới (đúng API Key)
 const firebaseConfig = {
-  apiKey: "AIzaSyCzzLZdTeI8xIWRM1Wa76GwmVIMQGu8Woc",
+  apiKey: "AIzaSyCzzZLd7eI8xIWRM1Wa76GwmVIMQGu8Woc",
   authDomain: "chatbox-2da1f.firebaseapp.com",
   databaseURL: "https://chatbox-2da1f-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "chatbox-2da1f",
