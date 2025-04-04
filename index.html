@@ -2,28 +2,111 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>Chatbox có đăng nhập</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatbox</title>
   <style>
-    body { font-family: Arial; background: #f5f5f5; display: flex; justify-content: center; padding-top: 50px; }
-    .container { width: 400px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
-    input, button { width: 100%; padding: 10px; margin: 5px 0; }
-    .hidden { display: none; }
-    #messages { height: 300px; overflow-y: auto; border: 1px solid #ccc; margin: 10px 0; padding: 10px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: 20px;
+      background: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    h3 {
+      text-align: center;
+    }
+
+    input, button {
+      padding: 12px;
+      margin: 6px 0;
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      background: #fafafa;
+    }
+
+    .msg {
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 15px;
+      }
+
+      input, button {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Đăng nhập / đăng ký -->
     <div id="auth-section">
-      <h3>Đăng ký / Đăng nhập</h3>
+      <h3>Đăng nhập / Đăng ký</h3>
       <input type="email" id="email" placeholder="Email" />
       <input type="password" id="password" placeholder="Mật khẩu" />
       <button onclick="register()">Tạo tài khoản</button>
       <button onclick="login()">Đăng nhập</button>
     </div>
 
+    <!-- Chat -->
     <div id="chat-section" class="hidden">
-      <p>Xin chào, <strong id="userEmail"></strong>! <button onclick="logout()">Đăng xuất</button></p>
-      <input type="text" id="name" placeholder="Tên hiển thị" />
+      <div class="top-bar">
+        <div>
+          Xin chào, <strong id="userEmail"></strong>!
+        </div>
+        <button style="background:#ef4444" onclick="logout()">Đăng xuất</button>
+      </div>
+      <input type="text" id="name" placeholder="Tên hiển thị của bạn" />
       <div id="messages"></div>
       <input type="text" id="messageInput" placeholder="Nhập tin nhắn..." />
       <button onclick="sendMessage()">Gửi</button>
