@@ -13,12 +13,16 @@ const firebaseConfig = {
 // Khởi tạo Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+const auth = firebase.auth();
 const chatRef = db.ref("chat");
 
-// DOM elements
+// DOM
 const nameInput = document.getElementById("name");
 const messageInput = document.getElementById("messageInput");
 const messagesDiv = document.getElementById("messages");
+const authSection = document.getElementById("auth-section");
+const chatSection = document.getElementById("chat-section");
+const userEmailDisplay = document.getElementById("userEmail");
 
 // Tạo màu riêng theo tên
 function getColorByName(name) {
@@ -30,26 +34,24 @@ function getColorByName(name) {
   return colors[total % colors.length];
 }
 
-// Gửi tin nhắn
-function sendMessage() {
-  const name = nameInput.value.trim();
-  const message = messageInput.value.trim();
-
-  if (!name || !message) return;
-
-  const timestamp = new Date().toISOString();
-
-  chatRef.push({ name, message, timestamp });
-
-  messageInput.value = "";
-}
-
-// Hàm định dạng giờ phút
+// Định dạng thời gian HH:MM
 function formatTime(isoString) {
   const date = new Date(isoString);
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
   return `${hours}:${minutes}`;
+}
+
+// Gửi tin nhắn
+function sendMessage() {
+  const name = nameInput.value.trim();
+  const message = messageInput.value.trim();
+  if (!name || !message) return;
+
+  const timestamp = new Date().toISOString();
+
+  chatRef.push({ name, message, timestamp });
+  messageInput.value = "";
 }
 
 // Nhận tin nhắn realtime
@@ -61,7 +63,46 @@ chatRef.on("child_added", (snapshot) => {
   const color = getColorByName(data.name);
   const time = data.timestamp ? formatTime(data.timestamp) : "";
 
-  msg.innerHTML = `<strong style="color: ${color}">${data.name}:</strong> ${data.message} <span style="color: #aaa; font-size: 0.85em">(${time})</span>`;
+  msg.innerHTML = `<strong style="color: ${color}">${data.name}:</strong> ${data.message} <span style="color:#aaa; font-size:0.85em">(${time})</span>`;
   messagesDiv.appendChild(msg);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
+});
+
+// Đăng ký tài khoản
+function register() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  if (!email || !password) return alert("Vui lòng nhập email và mật khẩu");
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(() => alert("Tạo tài khoản thành công!"))
+    .catch(err => alert(err.message));
+}
+
+// Đăng nhập
+function login() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  if (!email || !password) return alert("Vui lòng nhập email và mật khẩu");
+
+  auth.signInWithEmailAndPassword(email, password)
+    .catch(err => alert(err.message));
+}
+
+// Đăng xuất
+function logout() {
+  auth.signOut();
+}
+
+// Theo dõi trạng thái đăng nhập
+auth.onAuthStateChanged(user => {
+  if (user) {
+    authSection.classList.add("hidden");
+    chatSection.classList.remove("hidden");
+    userEmailDisplay.textContent = user.email;
+  } else {
+    authSection.classList.remove("hidden");
+    chatSection.classList.add("hidden");
+    messagesDiv.innerHTML = "";
+  }
 });
